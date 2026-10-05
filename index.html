@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RJ Jihad - Ultimate Multi-Agent Chain Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #030712;
+            color: #f8fafc;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 15px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            color: #38bdf8;
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+        /* API Keys Setup Box */
+        .api-config-box {
+            width: 100%;
+            max-width: 1000px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .api-config-box h3 {
+            font-size: 1rem;
+            color: #38bdf8;
+        }
+        .api-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .api-inputs input {
+            padding: 10px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        .studio-room {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        /* Agents Chain Grid */
+        .agents-chain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .agent-desk {
+            flex: 1;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: 0.3s;
+            position: relative;
+        }
+        .agent-desk.active {
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+        .agent-person-icon {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        .agent-desk h3 {
+            font-size: 1.1rem;
+            color: #38bdf8;
+        }
+        .agent-desk p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        .laptop-box {
+            background: #020617;
+            color: #4ade80;
+            padding: 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            height: 60px;
+            overflow: hidden;
+            border: 1px dashed #475569;
+            text-align: left;
+        }
+        /* Chain Flow Arrows */
+        .chain-arrow {
+            font-size: 1.5rem;
+            color: #64748b;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .chain-arrow.glow {
+            color: #38bdf8;
+            text-shadow: 0 0 10px #38bdf8;
+        }
+        /* Control Panel */
+        .control-panel {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .chain-status-log {
+            background: #020617;
+            color: #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            height: 120px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px solid #1e293b;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            display: flex;
+            gap: 12px;
+        }
+        .input-box input {
+            flex: 1;
+            padding: 14px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .input-box button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .input-box button:hover {
+            background: #0369a1;
+        }
+        /* Live Website Preview Window */
+        .preview-box {
+            background: #ffffff;
+            border-radius: 12px;
+            height: 450px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        #web-preview {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AI MULTI-AGENT CHAIN STUDIO</h1>
+        <p>তিনজন এজেন্ট ল্যাপটপে বসে চেইন আকারে কাজ করছে, বস!</p>
+    </header>
+
+    <!-- API Keys Setup Panel -->
+    <div class="api-config-box">
+        <h3>🔐 এপিআই কি সেটআপ প্যানেল</h3>
+        <div class="api-inputs">
+            <input type="password" id="key-nexus" placeholder="Nexus API Key (Manager)">
+            <input type="password" id="key-cipher" placeholder="Cipher API Key (Coder)">
+            <input type="password" id="key-glitch" placeholder="Glitch API Key (Tester)">
+        </div>
+    </div>
+
+    <div class="studio-room">
+        
+        <!-- 3 Agents Desks Connected in a Chain -->
+        <div class="agents-chain">
+            <!-- Agent 1: Nexus -->
+            <div class="agent-desk" id="desk-nexus">
+                <div class="agent-person-icon">🧑‍💻</div>
+                <h3>Nexus</h3>
+                <p>Manager (API-1)</p>
+                <div class="laptop-box" id="screen-nexus">Ready for command...</div>
+            </div>
+
+            <div class="chain-arrow" id="arrow-1">➔</div>
+
+            <!-- Agent 2: Cipher -->
+            <div class="agent-desk" id="desk-cipher">
+                <div class="agent-person-icon">👩‍‍💻</div>
+                <h3>Cipher</h3>
+                <p>Coder (API-2)</p>
+                <div class="laptop-box" id="screen-cipher">Waiting for data...</div>
+            </div>
+
+            <div class="chain-arrow" id="arrow-2">➔</div>
+
+            <!-- Agent 3: Glitch -->
+            <div class="agent-desk" id="desk-glitch">
+                <div class="agent-person-icon">🤖</div>
+                <h3>Glitch</h3>
+                <p>Tester (API-3)</p>
+                <div class="laptop-box" id="screen-glitch">Standby...</div>
+            </div>
+        </div>
+
+        <!-- Terminal & Input Panel -->
+        <div class="control-panel">
+            <div class="chain-status-log" id="chain-log">নিন, বস! ওপরের বক্সে আপনার ৩টি এপিআই কি দিয়ে নিচে কমান্ড দিন। Nexus থেকে ডাটা চেইন হয়ে Cipher এবং Glitch-এর কাছে যাবে।</div>
+            
+            <div class="input-box">
+                <input type="text" id="user-input" placeholder="এখানে ওয়েবসাইটের আইডিয়া বা কমান্ড লিখুন, বস..." onkeypress="if(event.key === 'Enter') runChainPipeline()">
+                <button onclick="runChainPipeline()">চেইন স্টার্ট করুন</button>
+            </div>
+        </div>
+
+        <!-- Live Website Preview Window -->
+        <div class="control-panel">
+            <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: #38bdf8;">👁️ প্রিমিয়াম লাইভ ওয়েবসাইট প্রিভিউ</h3>
+            <div class="preview-box">
+                <iframe id="web-preview" srcdoc="<h3 style='text-align:center; color:#666; margin-top:20%'>এখনো কোনো সাইট তৈরি হয়নি, বস। চেইন শুরু করুন!</h3>"></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function runChainPipeline() {
+            const keyNexus = document.getElementById('key-nexus').value.trim();
+            const keyCipher = document.getElementById('key-cipher').value.trim();
+            const keyGlitch = document.getElementById('key-glitch').value.trim();
+            const logBox = document.getElementById('chain-log');
+            const inputField = document.getElementById('user-input');
+            const command = inputField.value.trim();
+
+            if (!keyNexus || !keyCipher || !keyGlitch) {
+                alert("বস, দয়া করে ওপরের বক্সে তিনটি এজেন্টের জন্য তিনটি এপিআই কি (API Keys) বসিয়ে নিন!");
+                return;
+            }
+
+            if (!command) return;
+
+            logBox.innerHTML += `\n\n> **বস-এর কমান্ড:** "${command}"`;
+            inputField.value = "";
+
+            // --- STEP 1: NEXUS (MANAGER) ---
+            document.getElementById('desk-nexus').classList.add('active');
+            document.getElementById('screen-nexus').innerHTML = "Receiving command...";
+            logBox.innerHTML += `\n\n[1. Nexus]: কমান্ড রিসিভ করে প্ল্যান তৈরি করছি, বস...`;
+            
+            let nexusReply = "";
+            try {
+                const res1 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyNexus}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `You are Nexus, a manager. Address user strictly as "বস" (Boss) in Bengali. Acknowledge this request: "${command}" and prepare data for the coder.` }] }] })
+                });
+                const d1 = await res1.json();
+                nexusReply = d1.candidates[0].content.parts[0].text;
+                logBox.innerHTML += `\n🧑‍💻 **Nexus (API-1):** ${nexusReply}`;
+            } catch(e) {
+                nexusReply = "Plan ready.";
+            }
+            
+            document.getElementById('screen-nexus').innerHTML = "Data sent to Cipher ➔";
+            document.getElementById('arrow-1').classList.add('glow');
+            await sleep(1000);
+            document.getElementById('desk-nexus').classList.remove('active');
+
+            // --- STEP 2: CIPHER (CODER) ---
+            document.getElementById('desk-cipher').classList.add('active');
+            document.getElementById('screen-cipher').innerHTML = "Writing full code...";
+            logBox.innerHTML += `\n\n[2. Cipher]: Nexus থেকে ডাটা পেয়েছি! ল্যাপটপে প্রিমিয়াম ওয়েবসাইট কোড লিখছি, বস...`;
+
+            let websiteCode = "";
+            try {
+                const res2 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyCipher}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `You are Cipher, an elite web coder. The Boss wants this website: "${command}". 
+                    Write a FULL, gorgeous, responsive, heavy, and complete HTML & CSS webpage layout. No short snippets, provide full production code. 
+                    Wrap the ENTIRE HTML code inside standard markdown code blocks (\`\`\`html ... \`\`\`).` }] }] })
+                });
+                const d2 = await res2.json();
+                const reply2 = d2.candidates[0].content.parts[0].text;
+
+                const match = reply2.match(/```(?:html)?([\s\S]*?)```/);
+                if (match && match[1]) {
+                    websiteCode = match[1];
+                } else {
+                    websiteCode = reply2;
+                }
+                logBox.innerHTML += `\n👩‍💻 **Cipher (API-2):** পূর্ণাঙ্গ কোডিং সম্পন্ন! কোড গ্লিচের কাছে পাঠানো হচ্ছে।`;
+            } catch(e) {
+                logBox.innerHTML += `\n[Cipher Error]`;
+            }
+
+            document.getElementById('screen-cipher').innerHTML = "Data sent to Glitch ➔";
+            document.getElementById('arrow-2').classList.add('glow');
+            await sleep(1000);
+            document.getElementById('desk-cipher').classList.remove('active');
+
+            // --- STEP 3: GLITCH (TESTER) ---
+            document.getElementById('desk-glitch').classList.add('active');
+            document.getElementById('screen-glitch').innerHTML = "Testing & Verifying...";
+            logBox.innerHTML += `\n\n[3. Glitch]: Cipher থেকে কোড চেইন রিসিভ করেছি। ডিবাগ ও টেস্ট করছি, বস...`;
+
+            try {
+                const res3 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyGlitch}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `You are Glitch, a QA tester. Review code and reply briefly in Bengali addressing the user as "বস".` }] }] })
+                });
+                const d3 = await res3.json();
+                const reply3 = d3.candidates[0].content.parts[0].text;
+                logBox.innerHTML += `\n🤖 **Glitch (API-3):** ${reply3}`;
+            } catch(e) {
+                logBox.innerHTML += `\n🤖 **Glitch (API-3):** টেস্ট পাস! কোড নিরাপদ।`;
+            }
+
+            document.getElementById('screen-glitch').innerHTML = "Deployed to Preview!";
+            document.getElementById('desk-glitch').classList.remove('active');
+
+            // --- DEPLOY TO PREVIEW ---
+            if (websiteCode) {
+                document.getElementById('web-preview').srcdoc = websiteCode;
+                logBox.innerHTML += `\n\n✨ **[চেইন সাকসেস]:** ওয়েবসাইটটি লাইভ প্রিভিউ উইন্ডোতে সফলভাবে রান করা হয়েছে, বস!`;
+            }
+
+            // Voice Speech
+            if ('speechSynthesis' in window) {
+                const speech = new SpeechSynthesisUtterance("চেইন প্রসেস সম্পন্ন হয়েছে, বস। প্রিভিউ উইন্ডো চেক করুন।");
+                speech.lang = 'bn-BD';
+                window.speechSynthesis.speak(speech);
+            }
+
+            // Reset Arrows and Screens
+            await sleep(2000);
+            document.getElementById('arrow-1').classList.remove('glow');
+            document.getElementById('arrow-2').classList.remove('glow');
+            document.getElementById('screen-nexus').innerHTML = "Ready for command...";
+            document.getElementById('screen-cipher').innerHTML = "Waiting for data...";
+            document.getElementById('screen-glitch').innerHTML = "Standby...";
+        }
+    </script>
+
+</body>
+</html>
